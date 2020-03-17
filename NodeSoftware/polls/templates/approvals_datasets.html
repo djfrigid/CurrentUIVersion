@@ -1,0 +1,57 @@
+{% extends 'generic_template.html' %}
+
+{% block content %}
+<div class="debug">
+  DEBUG: Page 10
+</div>
+<h1 class="jumbotron text-center">Datasets waiting for Approval</h1>
+<div class="container text-center">
+  <div class="row">
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+
+          <style type="text/css">
+          .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+          .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+          </style>
+
+          <table class="tg table text-center">
+
+            <tr>
+              <th class="tg-cly1">Dataset Number</th>
+              <th class="tg-cly1">Dataset ID</th>
+              <th class="tg-cly1">Overview</th>
+              <th class="tg-cly1">Approve Dataset</th>
+              <th class="tg-01ax">Deny Dataset</th>
+            </tr>
+
+            {% for question in question_set %}
+            <tr>
+              <td class="tg-cly1">{{question.question_id}}</td>
+              <td class="tg-cly1">{{question.title}}</td>
+              <td class="tg-0lax">
+                <a href={% url 'questions_details' question_name=question.title %} class="btn btn-outline-secondary btn-block btn-color square"> Details </a>
+              </td>
+              <td>
+                <a href={% url 'datasets_approve_dataset' dataset_id=dataset.id %} class="btn btn-success">Approve</a>
+              </td>
+              <td>
+                <a href={% url 'datasets_deny_dataset' dataset_id=dataset.id %} class="btn btn-danger">Deny</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+  </div>
+</div>
+{% endblock %}

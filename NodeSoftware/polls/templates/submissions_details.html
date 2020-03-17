@@ -1,0 +1,25 @@
+{% extends 'generic_template.html' %}
+
+{% block content %}
+<h1 class="jumbotron text-center">Details For Submission: {{ sub.submission_id }}
+  <br> Which is for: {{sub.is_for_question}}
+</h1>
+<div class="container text-center">
+<div class="card card-body">
+<div class="list-group">
+  <a href="#" class="list-group-item list-group-item-action">
+    1. Specification <br>
+    2. First provided dataset <br>
+  </a>
+  <div class="row p-2">
+  </div>
+  <a href="#" class="list-group-item list-group-item-action">
+    <textarea name="name" rows="4" cols="80" placeholder="def Fibonacci(n): if n<0: ...."></textarea>
+    <textarea name="name" rows="4" cols="80" placeholder="[1234, 2345, 4546, 7656]"></textarea>
+  </a>
+  <div class="row p-2">
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}

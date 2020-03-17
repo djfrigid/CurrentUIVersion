@@ -1,0 +1,212 @@
+{% extends 'generic_template.html' %}
+
+{% block content %}
+<div class="debug">
+  DEBUG: Page 6, 7
+</div>
+<div class="container">
+  <div class="row p-4"></div>
+</div>
+<div class="container text-center">
+
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="user-tab" data-toggle="tab" href="#user" role="tab" aria-controls="user" aria-selected="true">Actions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Administration</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="user" role="tabpanel" aria-labelledby="user-tab">
+          <div class="card border-top-0 square">
+            <div class="card-body square">
+              <div class="row">
+                <div class="col-8">
+                  <!-- Trigger My Content Modal -->
+                  <a href="#" class="btn btn-outline-secondary btn-block btn-color square"
+                    data-toggle="modal" data-target="#mycontent">
+                    My Content
+                  </a>
+                </div>
+                <div class="col-4">
+                  <!-- Trigger Delete My Account Modal -->
+                  <a href="#" class="btn btn-outline-danger text-danger btn-block btn-color square"
+                    data-toggle="modal" data-target="#delete">
+                    Delete My Account
+                  </a>
+                </div>
+              </div>
+
+              <div class="row p-4"></div>
+
+              <div class="row">
+                <div class="col">
+                  <a href="/polls/questions" class="btn btn-outline-secondary btn-block btn-color square">
+                    Existing Questions
+                  </a>
+                  <a href="/polls/questions_create" class="btn btn-outline-success text-success btn-block btn-color square">
+                    Create Question
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+          <div id="collapseExample" class="card border-top-0 square">
+            <div class="card-body">
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <h4 class="alert-heading">Hold on ✋</h4>
+                <p>These are <span class="text-danger">Administrator</span> priviledges.</p>
+                <hr>
+                <p class="mb-0">Be sure you know what you're doing before you use these settings.</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <!-- Trigger Client Choice Modal -->
+                  <a href="#" class="btn btn-outline-secondary btn-block btn-color square"
+                    data-toggle="modal" data-target="#clientchoice">
+                    See Client Lists
+                  </a>
+                </div>
+                <div class="col-4">
+                  <a href="/polls/user_invite" class="btn btn-outline-primary text-primary btn-block btn-color square">
+                    Invite a New User
+                  </a>
+                </div>
+              </div>
+
+              <div class="row p-4"></div>
+
+              <div class="row">
+                <div class="col">
+                  <a href="/polls/approvals_questions" class="btn btn-outline-secondary btn-block btn-color square">
+                    Questions Waiting for Approval <span class="badge badge-primary">0</span>
+                  </a>
+                  <a href="/polls/approvals_datasets" class="btn btn-outline-secondary btn-block btn-color square">
+                    Datasets Waiting for Approval <span class="badge badge-danger">6</span>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+  <div class="row p-4"></div>
+
+</div>
+
+<!-- Delete My Account Modal -->
+<div id="delete" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Your Account</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete your account?
+        <hr>
+        <div class="row">
+          <div class="col">
+            Legal Information goes here Lorem ipsum dolor sit amet,
+            consectetur adipisicing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident,
+            sunt in culpa qui officia deserunt mollit anim id est.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- My Content Modal -->
+<div id="mycontent" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title">My Content</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <div class="list-group">
+              <a href="/polls/questions_mine" class="list-group-item list-group-item-action">
+                My Questions
+              </a>
+            </div>
+          </div>
+          <div class="col">
+            <div class="list-group">
+              <a href="/polls/submissions_all_my_subs" class="list-group-item list-group-item-action">
+                My Submission
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Client Choice Modal -->
+<div id="clientchoice" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title">My Content</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <div class="list-group">
+              <a href="/polls/node_clients_all" class="list-group-item list-group-item-action">
+                Node Clients
+              </a>
+            </div>
+          </div>
+          <div class="col">
+            <div class="list-group">
+              <a href="/polls/clients_all" class="list-group-item list-group-item-action">
+                All Clients
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

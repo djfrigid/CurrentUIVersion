@@ -1,0 +1,232 @@
+{% extends 'generic_template.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1 class="jumbotron text-center">Existing Questions</h1>
+<div class="container text-center">
+  Filter by Keywords
+  <div class="row p-2"></div>
+  <div class="dropdown show">
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="keywords" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Keyword Dropdown
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="keywords">
+      <a class="dropdown-item" href="#">Something</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+    </div>
+  </div>
+  <div class="row p-4"></div>
+
+  <table id="tablePreview" class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Question #</th>
+        <th>Question Name</th>
+        <th>Submitting Node</th>
+        <th>Total Number of<br>Submissions</th>
+        <th>My Submission</th>
+        <th>Overview</th>
+        <th>Start New Submission</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for question in question_set %}
+      <tr>
+        <td>{{ question.question_id }}</td>
+        <td>{{ question.title }}</td>
+        <td>Node-Name</td>
+        <td>{{ question.number_of_submissions }}</td>
+        <td>
+            <a href={% url 'submissions_spec_my_subs' for_question=question.title %} class="btn btn-danger">Details</a>
+        </td>
+        <td>
+            <a href={% url 'questions_details' question_name=question.title %} class="btn btn-danger">Details</a>
+        </td>
+        <td>
+            <a href={% url 'submissions_new' for_question=question.title %} class="btn btn-danger">Start</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action">
+          1. Content brief <br>
+          2. Specification <br>
+          2. Expected input & output (dataset) <br>
+        </a>
+        <div class="row p-2">
+        </div>
+        <a href="#" class="list-group-item list-group-item-action">
+          <textarea name="name" rows="4" cols="80" placeholder="def Fibonacci(n): if n<0: ...."></textarea>
+          <textarea name="name" rows="4" cols="80" placeholder="[1234, 2345, 4546, 7656]"></textarea>
+        </a>
+        <div class="row p-2">
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+
+          <table id="tablePreview2" class="table table-bordered table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Submission #</th>
+                <th>Submitted By</th>
+                <th>Result Real Number</th>
+                <th>More Info</th>
+                <th>Rank Comparison</th>
+                <th>Confirmed By</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="row">1</td>
+                <td>Submitted By</td>
+                <td>Result Real Number</td>
+                <td>More Info</td>
+                <td>Rank Comparison</td>
+                <td>Confirmed By</td>
+                <td><button data-toggle="modal" data-target="#mysubs" type="button" class="btn btn-danger">[Details]</button></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+      <div class="row p-4"></div>
+      <div class="list-group">
+        <!-- Trigger My Submissions Modal -->
+        <a href="#" class="list-group-item list-group-item-action"
+          data-toggle="modal" data-target="#mysubs">
+          My Submissions for this Problem
+        </a>
+        <div class="row p-2">
+        </div>
+        <a href="/polls/submissions_new" class="list-group-item list-group-item-action">
+          Start New Submission for this Problem
+        </a>
+        <div class="row p-2">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- My Submissions Modal -->
+<div id="mysubs" class="modal fade" role="dialog">
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h4 class="modal-title">Submission for: Problem Name</h4>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action">
+          Relevant info:
+          <div class="row">
+            <div class="col">
+              Legal Information goes here Lorem ipsum dolor sit amet,
+              consectetur adipisicing elit,
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur.
+              Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est.
+            </div>
+          </div>
+          <div class="row p-4"></div>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">
+          Submitting user:
+          <div class="row">
+            <div class="col">
+              James David Bateman
+            </div>
+          </div>
+          <div class="row p-4"></div>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">
+          Submitting node:
+          <div class="row">
+            <div class="col">
+              Legal Information goes here Lorem ipsum dolor sit amet,
+              consectetur adipisicing elit,
+              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur.
+              Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est.
+            </div>
+          </div>
+          <div class="row p-4"></div>
+        </a>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <style type="text/css">
+          .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+          .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+          </style>
+          <table class="tg">
+            <tr>
+              <th class="tg-cly1">Node Id</th>
+              <th class="tg-cly1">Run Completion</th>
+              <th class="tg-cly1">Result</th>
+              <th class="tg-cly1">Rank Comparison</th>
+              <th class="tg-cly1">Runtime</th>
+            </tr>
+            <tr>
+              <td class="tg-0lax"></td>
+              <td class="tg-0lax"></td>
+              <td class="tg-0lax"></td>
+              <td class="tg-0lax"></td>
+              <td class="tg-0lax"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="row p-4"></div>
+
+      <div class="card">
+        <div class="card-header" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          My other submissions for this Problem
+        </div>
+        <div id="collapseExample" class="card-body collapse" data-toggle="collapse">
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action">
+              More Submissions to expand..
+              <div class="row p-4"></div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+              More Submissions to expand..
+              <div class="row p-4"></div>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+              More Submissions to expand..
+              <div class="row p-4"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

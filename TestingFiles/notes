@@ -1,0 +1,26 @@
+Ask if we're particularly attached to the modal method of dealing with questions (No)
+Ask if the all clients really is all clients, or just those that are node members like the button says. (It's just node members)
+(If so, implement a node membership system in the database, on the node collection ONLY, to prevent update anomalies, along with the required model changes)
+
+Change the model to decouple datasets from questions., so they can be approved seperately.
+
+Fix the blackbox
+
+
+Add a whole lot of booleans, to signify the approval (or not) of datasets, whether a question is live or not and more (probably)
+Add the creating user to the Node model
+Update all question based queries to only include questions that have been approved
+use the get_or_404() methods to ensure that the queries don't crash the site if they don't work.
+
+Check out function decorators to make login required, and restricting the access for admins etc, then add them
+Rework logins to use Django middleware
+
+Update the
+
+Make DB migrations after changes to models
+
+2 hour on the call for modules
+2 hours yesterday on meeting
+
+
+4.5 hours programming Monday

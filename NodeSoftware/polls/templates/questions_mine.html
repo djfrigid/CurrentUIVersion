@@ -1,0 +1,57 @@
+{% extends 'generic_template.html' %}
+
+{% block content %}
+<h1 class="jumbotron text-center">My Questions</h1>
+<div class="container text-center">
+  <div class="row">
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          Here you can view the questions that you have submitted for evaluation by the network.
+          <hr>
+          <style type="text/css">
+          .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+          .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+          </style>
+          <table class="tg table text-center">
+            <tr>
+              <th class="tg-cly1">Question Number</th>
+              <th class="tg-cly1">Question ID</th>
+              <th class="tg-cly1">Question Name</th>
+              <th class="tg-cly1">Submitting Node</th>
+              <th class="tg-cly1">Total Number of Submissions</th>
+              <th class="tg-cly1">My Submissions</th>
+              <th class="tg-cly1">Overview</th>
+              <th class="tg-0lax">Approval Status</th>
+              <th class="tg-cly1">Delete</th>
+            </tr>
+            {% for entry in question_set %}
+            <tr>
+              <td class="tg-cly1">{{ forloop.counter }}</td>
+              <td class="tg-cly1">{{ entry.question_id}}</td>
+              <td class="tg-cly1">{{ entry.title }}</td>
+              <td class="tg-cly1">Node-Name</td>
+              <td class="tg-cly1">{{ entry.number_of_submissions }}</td>
+              <td class="tg-cly1"><a href={% url 'submissions_spec_my_subs' for_question=entry.title %} class = "btn btn-danger">Details</a></td>
+              <td class="tg-cly1"><a href={% url 'questions_details' question_name=entry.title %} class="btn btn-danger">Details</a></td>
+              {% if entry.is_approved %}
+                <td class="tg-0lax">Approved</td>
+              {% else %}
+                <td class="tg-0lax">Not Approved</td>
+              {% endif %}
+              <td><a href={% url 'delete_content_question' question_id=entry.question_id %} class="btn btn-danger">Delete</a></td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+  </div>
+</div>
+{% endblock %}

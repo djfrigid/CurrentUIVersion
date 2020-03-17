@@ -1,0 +1,144 @@
+{% extends 'generic_template.html' %}
+
+{% block content %}
+<h1 class="jumbotron text-center">Welcome to JCoin, &lt;admin username&gt; </h1>
+<div class="container text-center">
+  <div class="row">
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="list-group">
+            <!-- Trigger Add Users Modal -->
+            <a href="#" class="list-group-item list-group-item-action"
+              data-toggle="modal" data-target="#addusers">
+              Add Users
+            </a>
+            <div class="row p-2">
+            </div>
+            <!-- Trigger Specification waiting for approval Modal -->
+            <a href="#" class="list-group-item list-group-item-action"
+              data-toggle="modal" data-target="#spec">
+              Specification waiting for approval (n)
+            </a>
+            <div class="row p-2">
+            </div>
+            <!-- Trigger Datasets waiting for approval Modal -->
+            <a href="#" class="list-group-item list-group-item-action"
+              data-toggle="modal" data-target="#data">
+              Datasets waiting for approval (n)
+            </a>
+            <div class="row p-2">
+            </div>
+            <a href="/questions" class="list-group-item list-group-item-action">
+              View Problems
+            </a>
+            <div class="row p-2">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+  </div>
+</div>
+
+<!-- Add Users Modal -->
+<div id="addusers" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title">Add a New User</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col">
+              <div class="form-check">
+                <input id="usertypecheck" class="form-check-input" type="radio" name="usertype" value="user" checked>
+                <label class="form-check-label" for="usertypecheck">
+                  Regular User
+                </label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-check">
+                <input id="usertypecheck2" class="form-check-input" type="radio" name="usertype" value="admin">
+                <label class="form-check-label" for="usertypecheck2">
+                  Admin User
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row p-2">
+
+          </div>
+          <div class="form-group">
+            <input id="adduseremail" type="email" class="form-control" placeholder="Email Address">
+          </div>
+          <button type="submit" class="btn btn-outline-primary btn-block">Confirm</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Specification waiting for approval Modal -->
+<div id="spec" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title">Specification waiting for approval</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            Table of specs/related info | approve button
+            <div class="row p-4"></div>
+            <div class="row p-4"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Trigger Datasets waiting for approval Modal -->
+<div id="data" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title">Trigger Datasets waiting for approval</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            Table of datasets/related info | approve button
+            <div class="row p-4"></div>
+            <div class="row p-4"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

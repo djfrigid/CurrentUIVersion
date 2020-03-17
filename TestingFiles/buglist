@@ -1,0 +1,20 @@
+Give the creator automatic, irremovable admin status
+Node deletion
+add pass/fail to submissions
+Change the clients_all endpoint to allow account deletion and add a search feature, for scalability. change privilege rows to the 'soft' and 'hard' deletes. 'Hard' deletions redirect to a page with the user content, to allow selective deletion of the content
+Add modal to user page, to contain account
+Provision for multiple source files
+Tag system
+submissions_spec_my_subs complete
+Immediate viewing of best solution
+Update all of the tables, to show both table row and question ID
+Sorting the questions page
+extra field to questions, only for admins , triggers a deletion modal
+
+3 hours
+
+Current Action Item:
+
+For Later:
+Consider problem with no invited user and the use of the current_node session variable
+Make datasets downloadable # Issue with the storing of datasets, need to refine how they are stored to be able to pass the relevant data. <a href={% url 'download_dataset' dataset_id={{dataset %} class="btn btn-danger">Download</a>

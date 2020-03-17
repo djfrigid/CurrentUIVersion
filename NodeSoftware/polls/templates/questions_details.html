@@ -1,0 +1,23 @@
+{% extends 'generic_template.html' %}
+
+{% block content %}
+<h1 class="jumbotron text-center">Details for: {{ question.title|default:"Error" }}</h1>
+<div class="container text-center">
+<div class="card card-body">
+<div class="list-group">
+  <a href="#" class="list-group-item list-group-item-action">
+    1. Specification <br>
+    2. First provided dataset <br>
+  </a>
+  <div class="row p-2">
+  </div>
+  <a href="#" class="list-group-item list-group-item-action">
+    <textarea name="name" rows="4" cols="80" readonly placeholder="Error!">{{Specification}}</textarea>
+    <textarea name="name" rows="4" cols="80" readonly placeholder="Error!">{{dataset}}</textarea>
+  </a>
+  <div class="row p-2">
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}

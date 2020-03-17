@@ -1,0 +1,47 @@
+{% extends 'generic_template.html' %}
+
+{% block content %}
+<h1 class="jumbotron text-center">My Submissions for {{for_question}} </h1>
+<div class="container text-center">
+  <div class="row">
+    <div class="col-lg-2">
+
+    </div>
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <style type="text/css">
+          .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+          .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+          </style>
+          <table class="tg">
+            <tr>
+              <th class="tg-cly1">Table Row</th>
+              <th class="tg-cly1">Submission ID</th>
+              <th class="tg-cly1">Result</th>
+              <th class="tg-cly1">Rank</th>
+              <th class="tg-cly1">Number of Confirming Nodes</th>
+              <th class="tg-cly1">Overview</th>
+            </tr>
+            {% for submission in submission_set %}
+            <tr>
+              <td class="tg-cly1">{{forloop.counter}}</td>
+              <td class="tg-cly1">{{submission.submission_id}}</td>
+              <td class="tg-cly1">{{ submission.result }}</td>
+              <td class="tg-cly1">{{ submission.rank }}</td>
+              <td class="tg-cly1">{{ submission.number_of_confirmations}}</td>
+              <td class="tg-cly1">
+                <a href={% url 'submissions_details' submission_id=submission.submission_id %} class="btn btn-danger">Details</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+  </div>
+</div>
+{% endblock %}
