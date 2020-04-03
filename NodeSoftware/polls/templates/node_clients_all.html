@@ -1,5 +1,7 @@
 {% extends 'generic_template.html' %}
 
+{% load extras %}
+
 {% block content %}
 <div class="debug">
   DEBUG: Page 11
@@ -13,7 +15,7 @@
     <div class="col-lg-8">
       <div class="card">
         <div class="card-body">
-          Here you can view the clients that are members of your node.
+          Here you can view the clients that are members of this node ({{node.node_name}}).
           <hr>
           <style type="text/css">
           .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
@@ -31,13 +33,26 @@
             <tr>
               <td class="tg-cly1">{{ forloop.counter }}</td>
               <td class="tg-cly1">{{ client.username }}</td>
-              <td class="tg-cly1">{{ client.current_privilege }}</td>
-              {% if client.current_privilege == "Client" %}
-                <th class="tg-cly1"><a href={% url 'user_change_privilege' username=client.username %} class="btn btn-danger">Make Admin</a></th>
+              <td class="tg-cly1">
+                {{node.members|dict_access:client.username}}
+              </td>
+
+              {% if node.members|dict_access:client.username == "Creator" %}
+
+                <td class="tg-cly1">Not Applicable</td>
+                <td class="tg-cly1">Not Applicable</td>
+
               {% else %}
-                <th class="tg-cly1"><a href={% url 'user_change_privilege' username=client.username %} class="btn btn-danger">Remove Admin</a></th>
-              {% endif %}
-              <th class="tg-cly1"><a href={% url 'user_remove_from_node' username=client.username %} class="btn btn-danger">Remove from Node</a> </th>
+
+                {% if client.current_privilege == "Client" %}
+                  <td class="tg-cly1"><a href={% url 'user_change_privilege' username=client.username %} class="btn btn-danger">Make Admin</a></td>
+                {% else %}
+                  <td class="tg-cly1"><a href={% url 'user_change_privilege' username=client.username %} class="btn btn-danger">Remove Admin</a></td>
+                {% endif %}
+                <td class="tg-cly1"><a href={% url 'user_remove_from_node' username=client.username %} class="btn btn-danger">Remove from Node</a> </td>
+
+             {% endif %}
+
             {% endfor %}
           </table>
         </div>

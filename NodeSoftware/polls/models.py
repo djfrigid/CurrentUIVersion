@@ -27,10 +27,11 @@ class Submission(models.Model):
     tmp_files_created = models.IntegerField(default = 0)
     src_size = models.FloatField(default = 0.0)
     overall_result = models.FloatField(default = 0.0)
-    rank = models.IntegerField() #This is going t o have to either be recomputed on the DB end every time a new document is added, or have to be computed at runtime when queried, both are going to impact performance somewhat
+    rank = models.IntegerField() #This is going to have to either be recomputed on the DB end every time a new document is added, or have to be computed at runtime when queried, both are going to impact performance somewhat
     number_of_confirmations = models.IntegerField(default = 0)
     src_file = models.FileField(upload_to='uploads', default = "")
     creation_date = models.DateTimeField(default=None)
+    pass_status = models.CharField(max_length = 4, default = "Fail")
 
     objects = models.DjongoManager()
 
@@ -38,7 +39,7 @@ class Node(models.Model):
     _id = models.ObjectIdField(default = None)
     node_name = models.CharField(max_length = 64)
     creators_name = models.CharField(max_length = 128, default = "")
-    members = models.ListField(default = [])
+    members = models.DictField(default = {})
 
     objects = models.DjongoManager()
 
@@ -50,18 +51,18 @@ class Login(models.Model):
 
     objects = models.DjongoManager()
 
-class User(models.Model):
+class Client(models.Model):
     _id = models.ObjectIdField(default = None)
     username = models.CharField(max_length = 64)
     email = models.CharField(max_length = 200, default = "")
-    current_privilege = models.CharField(max_length = 8, default = "Client")
-    
+    memberships = models.DictField(default = {})
+
     objects = models.DjongoManager()
 
 class Tags(models.Model):
     #No Mongo object ID is needed here, as the name of the tag will be able to serve as the primary key (which nicely prevents two people creating different tags for the same thing, though machine_learning, machinelearning, machine-learning, machineLearning and MachineLearing would all be able to )
     # be stored unless we use some sanitization on tag creation, say enforce lowercase and no punctutation, or select from set (which uses a different backend method)
-    name = models.CharField(max_length = 64)
+    name = models.DictField(default = {})
     objects = models.DjongoManager()
 
 class Dataset(models.Model):
@@ -82,3 +83,6 @@ class Metadata(models.Model):
     next_dataset_id = models.IntegerField()
 
     objects = models.DjongoManager()
+
+class Test(models.Model):
+    file = models.FileField(upload_to='uploads')

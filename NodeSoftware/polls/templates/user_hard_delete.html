@@ -1,0 +1,63 @@
+{% extends 'generic_template.html' %}
+
+{% block content %}
+  <h1 class="jumbotron text-center">Content Deletion</h1>
+  <div class="container text-center">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card body">
+          <style type="text/css">
+          .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+          .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+          </style>
+          <table class="tg table text-center">
+            <tr>
+              <th class="tg-cly1">Item Number</th>
+              <th class="tg-cly1">Item Type</th>
+              <th class="tg-cly1">View Overview</th>
+              <th class="tg-cly1">Delete Item</th>
+            </tr>
+            {% for question in questions %}
+              <tr>
+                <td class="tg-cly1">{{ forloop.counter }}</td>
+                <td class="tg-cly1">Question</td>
+                <td class="tg-cly1">
+                  <a href={% url 'questions_details' question_name=question.title %} class="btn btn-info">Details</a>
+                </td>
+                <td class="tg-cly1">
+                  <a href={% url 'hard_delete_question' question_name=question.title %} class="btn btn-danger">Delete</a>
+                </td>
+              </tr>
+            {% endfor %}
+            {% for dataset in datasets %}
+            <tr>
+              <td class="tg-cly1">{{ forloop.counter }}</td>
+              <td class="tg-cly1">Dataset</td>
+              <td class="tg-cly1">
+                <a href={% url 'datasets_details' dataset_id=dataset.dataset_id %} class="btn btn-info">Details</a>
+              </td>
+              <td class="tg-cly1">
+                <a href={% url 'hard_delete_dataset' dataset_id=dataset.dataset_id %} class="btn btn-danger">Delete</a>
+              </td>
+            </tr>
+            {% endfor %}
+            {% for submission in submissions %}
+            <tr>
+              <td class="tg-cly1">{{ forloop.counter }}</td>
+              <td class="tg-cly1">Submission</td>
+              <td class="tg-cly1">
+                <a href={% url 'submissions_details' submission_id=submission.submission_id %} class="btn btn-info">Details</a>
+              </td>
+              <td class="tg-cly1">
+                <a href={% url 'hard_delete_submission' submission_id=submission.submission_id %} class="btn btn-danger">Delete</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+          <a href="/polls/user" class="btn btn-danger">Delete My User Profile Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

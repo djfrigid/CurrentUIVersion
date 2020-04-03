@@ -1,7 +1,7 @@
 {% extends 'generic_template.html' %}
 
 {% block content %}
-<h1 class="jumbotron text-center">My Submissions for {{for_question}} </h1>
+<h1 class="jumbotron text-center">Node Choice</h1>
 <div class="container text-center">
   <div class="row">
     <div class="col-lg-2">
@@ -10,28 +10,24 @@
     <div class="col-lg-8">
       <div class="card">
         <div class="card-body">
+          <h4>These are the nodes you are a member of</h4>
+          <hr>
           <style type="text/css">
           .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
           .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
           </style>
           <table class="tg table text-center">
             <tr>
-              <th class="tg-cly1">Table Row</th>
-              <th class="tg-cly1">Submission ID</th>
-              <th class="tg-cly1">Result</th>
-              <th class="tg-cly1">Rank</th>
-              <th class="tg-cly1">Number of Confirming Nodes</th>
-              <th class="tg-cly1">Overview</th>
+              <th class="tg-cly1">Row Number</th>
+              <th class="tg-cly1">Node Name</th>
+              <th class="tg-cly1">Choose Node</th>
             </tr>
-            {% for submission in submission_set %}
+            {% for node in nodes %}
             <tr>
               <td class="tg-cly1">{{forloop.counter}}</td>
-              <td class="tg-cly1">{{submission.submission_id}}</td>
-              <td class="tg-cly1">{{ submission.result }}</td>
-              <td class="tg-cly1">{{ submission.rank }}</td>
-              <td class="tg-cly1">{{ submission.number_of_confirmations}}</td>
+              <td class="tg-cly1">{{node.node_name}}</td>
               <td class="tg-cly1">
-                <a href={% url 'submissions_details' submission_id=submission.submission_id %} class="btn btn-danger">Details</a>
+                <a href={% url 'user_login_to_node' node_name=node.node_name %} class='btn btn-primary'>Log on</a>
               </td>
             </tr>
             {% endfor %}

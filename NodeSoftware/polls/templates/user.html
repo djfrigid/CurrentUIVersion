@@ -19,6 +19,9 @@
         <li class="nav-item">
           <a class="nav-link" id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Administration</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" id="creator-tab" data-toggle="tab" href="#creator" aria-controls="creator" aria-selected="false">Creator</a>
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="user" role="tabpanel" aria-labelledby="user-tab">
@@ -35,8 +38,8 @@
                 <div class="col-4">
                   <!-- Trigger Delete My Account Modal -->
                   <a href="#" class="btn btn-outline-danger text-danger btn-block btn-color square"
-                    data-toggle="modal" data-target="#delete">
-                    Delete My Account
+                    data-toggle="modal" data-target="#manage-account">
+                    Manage My Account
                   </a>
                 </div>
               </div>
@@ -99,6 +102,25 @@
             </div>
           </div>
         </div>
+        <div class="tab-pane fade" id="creator" role="tabpanel" aria-labelledby="creator-tab">
+          <div class="card border-top-0 square">
+            <div class="card-body square">
+              <div class="row">
+                <div class="col-8">
+                  <!-- Trigger My Content Modal -->
+                  <a href="/polls/node_clients_all" class="btn btn-block btn-primary"> Change Client Statuses </a>
+                </div>
+                <div class="col-4">
+                  <!-- Trigger Delete My Account Modal -->
+                  <a href="#" class="btn btn-outline-danger text-danger btn-block btn-color square"
+                    data-toggle="modal" data-target="#manage-node">
+                    Manage My Node
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="col-lg-2"></div>
@@ -108,33 +130,33 @@
 </div>
 
 <!-- Delete My Account Modal -->
-<div id="delete" class="modal fade" role="dialog">
+<div id="manage-account" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
 
       <div class="modal-header">
-        <h4 class="modal-title">Delete Your Account</h4>
+        <h4 class="modal-title">Manage Account Status</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        Are you sure you want to delete your account?
-        <hr>
         <div class="row">
           <div class="col">
-            Legal Information goes here Lorem ipsum dolor sit amet,
-            consectetur adipisicing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident,
-            sunt in culpa qui officia deserunt mollit anim id est.
+            <div class="list-group">
+              <a href="/polls/user_manage_my_account" class="list-group-item list-group-item-action">
+                Manage My Account
+              </a>
+            </div>
+          </div>
+          <div class="col">
+            <div class="list-group">
+              <a href="/polls/submissions_all_my_subs" class="list-group-item list-group-item-action">
+                Delete My Account
+              </a>
+            </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default">Submit</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -197,6 +219,40 @@
             <div class="list-group">
               <a href="/polls/clients_all" class="list-group-item list-group-item-action">
                 All Clients
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Node Management Modal -->
+
+<div id="manage-node" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">My Content</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-8">
+            <div class="list-group">
+              <a href="/polls/node_clients_all" class="list-group-item list-group-item-action">
+                Edit Node Information
+              </a>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="list-group">
+              <a href="/polls/clients_all" class="list-group-item list-group-item-danger">
+                Delete Node
               </a>
             </div>
           </div>

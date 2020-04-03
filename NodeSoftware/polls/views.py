@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, FileResponse
 from django.core.paginator import Paginator
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 from secrets import token_hex
 import datetime
+from random import choice
 
 from .forms import *
 from .models import *
@@ -24,8 +26,7 @@ def login(request):
             is_allowed = authenticate_user(login_form.cleaned_data['username'], login_form.cleaned_data['password'])
             if is_allowed:
                 request.session['user'] = login_form.cleaned_data['username']
-                request.session['is_authorized'] = True
-                return HttpResponseRedirect('user')
+                return HttpResponseRedirect('node_selection/' + request.session['user'])
             else:
                 pass
                 #Something needs to get done to say the user's password was wrong
@@ -33,8 +34,6 @@ def login(request):
         login_form = LoginForm()
 
     return render(request, 'login.html', {'form' : login_form})
-
-#NOT STARTED
 
 def admin(request):
     return render(request, 'admin.html')
@@ -68,7 +67,7 @@ def questions_create(request):
 #FINISHED - Unless we plan on implementing a log back in link? Even then, that will be an update to the template and not this
 
 def logout(request):
-    session.flush()
+    request.session.flush()
     return render(request, 'logout.html')
 
 #FINISHED
@@ -97,7 +96,8 @@ def register_node(request):
     if request.method == "POST":
         register_form = NewNode(request.POST)
         if register_form.is_valid():
-            new_node = Node(token_hex(12), register_form.cleaned_data['name'], register_form.cleaned_data['location'])
+            new_node = Node(token_hex(12), register_form.cleaned_data['name'], request.session['user'])
+            new_node.members[request.session['user']] = "Creator"
             new_node.save()
             return HttpResponseRedirect('index')
     else:
@@ -105,14 +105,11 @@ def register_node(request):
 
     return render(request, 'register_node.html', {'form' : register_form})
 
-#NOT STARTED
-
 def questions(request):
-    question_set = Question.objects.all()
-    question_set = question_set.filter(is_approved = True)
+    question_set = Question.objects.all().filter(is_approved = True)
     return render(request, 'questions.html', {'question_set' : question_set} )
 
-#NOT STARTED
+#FIMNISHED
 
 def submissions_new(request, for_question):
 
@@ -152,7 +149,7 @@ def register_client(request):
         if client_form.is_valid() and client_form.cleaned_data['password'] == client_form.cleaned_data['confirm_password']:
             new_id = token_hex(12)
             user_data = gen_login_data(client_form.cleaned_data['password'])
-            new_client = User(new_id, client_form.cleaned_data['name'], client_form.cleaned_data['email'], False)
+            new_client = Client(new_id, client_form.cleaned_data['name'], client_form.cleaned_data['email'], {})
             new_login = Login(new_id, client_form.cleaned_data['name'], user_data['salt'], user_data['hashed_password'])
             new_client.save()
             new_login.save()
@@ -189,18 +186,24 @@ def questions_mine(request):
     question_set = question_set.filter(submitting_user = request.session['user'])
     return render(request, 'questions_mine.html', {'question_set' : question_set})
 
-#Again, solid logic, but needs to actually do the right thing.
+#BELIVED FINISHED
 
 def node_clients_all(request):
-    client_set = User.objects.all()
-    return render(request, 'node_clients_all.html', {'client_set' : client_set})
+    client_set = Client.objects.all().filter(memberships__contains=request.session['current_node'])
+    node = Node.objects.get(node_name = request.session['current_node'])
+    return render(request, 'node_clients_all.html', {'client_set' : client_set, 'node' : node})
 
 def clients_all(request):
-    client_set = User.objects.all()
+    if request.method=="GET":
+        form = SearchForm(request.GET)
+        if request.GET.get('search_field'):
+            client_set = Client.objects.all().filter(username__icontains=request.GET.get('search_field'))
+        else:
+            client_set = Client.objects.all()
     paginator = Paginator(client_set, 25) #Split the client query set into a set of "pages", each holding 25 clients
     page_num = request.GET.get('page') #Get the current page number from the current request objects GET data
     page_obj = paginator.get_page(page_num) #Get the actual page object from the paginator, this has the actual data in it
-    return render(request, 'clients_all.html', {'page' : page_obj})
+    return render(request, 'clients_all.html', {'page' : page_obj, 'form' : form})
 
 #Not yet started
 
@@ -216,7 +219,8 @@ def questions_details(request, question_name):
     question_data = Question.objects.get(title = question_name)
     spec = question_data.spec.read().decode('utf-8')
     dataset = question_data.datasets.read().decode('utf-8')
-    return render(request, 'questions_details.html', {'question' : question_data, 'Specification' : spec, 'dataset' : dataset, 'dataset_id' : dataset_id})
+    # solution = question_data.best_solution.read().decode('utf-8') needs file associating with the field to work properly.
+    return render(request, 'questions_details.html', {'question' : question_data, 'Specification' : spec, 'dataset' : dataset})
 
 def questions_approve_question(request, question_name):
     question  = Question.objects.get(title = question_name)
@@ -243,24 +247,19 @@ def datasets_deny_dataset(request, dataset_id):
 # FINISHED - Privilege level will change then reload the page to show the change
 
 def user_change_privilege(request, username):
-    user_data = User.objects.get(username = username)
-    if user_data.current_privilege == "Client":
-        user_data.current_privilege = "Admin"
+    current_node = Node.objects.get(node_name = request.session['current_node'])
+    members = current_node.members
+    if username in members.keys():
+        if members[username] == "Creator":
+            pass #Replace with a message saying creator cannot be unadminned, and a HttpResponseRedirect to page
+        elif members[username]  == "Client":
+            user_data.current_privilege = "Admin"
+        else:
+            user_data.current_privilege = "Client"
     else:
-        user_data.current_privilege = "Client"
-    user_data.save()
+        pass #Replace with saying user doesn't exist and the system has errored, and a HttpResponseRedirect to page again.
+    current_node.save()
     return HttpResponseRedirect('/polls/node_clients_all')
-
-#Copy of above function, but for the all node clients endpoint
-
-def user_change_privilege_all_clients(request, username):
-    user_data = User.objects.get(username = username)
-    if user_data.current_privilege == "Client":
-        user_data.current_privilege = "Admin"
-    else:
-        user_data.current_privilege = "Client"
-    user_data.save()
-    return HttpResponseRedirect('/polls/clients_all')
 
 def user_remove_from_node(request, username):
     node = Node.objects.get(node = request.session['current_node'])
@@ -294,3 +293,85 @@ def delete_content_submission(request, submission_id):
     submission = Submission.objects.get(submission_id = submission_id)
     submission.delete()
     return HttpResponseRedirect('/polls/submissions_all_my_subs')
+
+def user_soft_delete(request, username):
+    user = Client.objects.get(username = username)
+    user.delete()
+    return HttpResponseRedirect('/polls/clients_all')
+
+def user_hard_delete(request, username):
+    user = Client.objects.get(username = username)
+    associated_submissions = Submission.objects.all().filter(submitting_user = username)
+    associated_questions = Question.objects.all().filter(submitting_user = username)
+    associated_datasets = Dataset.objects.all().filter(submitter_name = username)
+    return render(request, 'user_hard_delete.html', {'user' : user, 'submissions' : associated_submissions, 'questions' : associated_questions, 'datasets' : associated_datasets})
+
+def hard_delete_question(request, question_title):
+    question = Question.objects.get(title = question_title)
+    question.delete()
+    return HttpResponseRedirect('polls/user_hard_delete')
+
+def hard_delete_submission(request, submission_id):
+    submission = Submission.objects.get(submission_id = submission_id)
+    submissiion.delete()
+    return HttpResponseRedirect('polls/user_hard_delete')
+
+def hard_delete_dataset(request, dataset_id):
+    dataset = Dataset.objects.get(dataset_id = dataset_id)
+    dataset.delete()
+    return HttpResponseRedirect('polls/user_hard_delete')
+
+def datasets_details(request, dataset_id):
+    dataset = Dataset.objects.get(dataset_id = dataset_id)
+    content = dataset.actual_data.read().decode('utf-8')
+    return render(request, 'datasets_details.html', {'dataset' : dataset, 'content' : content})
+
+def node_delete(request):
+    pass
+
+#FINISHED
+def sort_table(request, sort_by, sort_order):
+    if sort_order == "descending":
+        question_set = Question.objects.all().filter(is_approved = True).order_by("-"+sort_by)
+    elif sort_order == "ascending":
+        question_set = Question.objects.all().filter(is_approved = True).order_by(sort_by)
+    request.session['current_sort'] = sort_by
+    request.session['current_sort_direction'] = sort_order
+    return render(request, 'questions.html', {'question_set' : question_set})
+
+def user_login_to_node(request, node_name):
+    request.session['current_node'] = node_name
+    request.session['is_authorized'] = True
+    return HttpResponseRedirect('/polls/user')
+
+def node_selection(request, username):
+    nodes = Client.objects.get(username=username).memberships
+    if not nodes:
+        node_list = Node.objects.all()
+        node = choice(node_list)
+        request.session['current_node'] = node.node_name
+        request.session['is_authorized'] = True
+        return HttpResponseRedirect('/polls/user')
+    else:
+        return render(request, 'node_selection.html', {'nodes': nodes})
+
+# TEST CODE REMOVE BEFORE GOING LIVE
+
+def test(request):
+    file_form = None
+
+    if request.method == "POST":
+        file_form = TestForm(request.POST, request.FILES)
+        if file_form.is_valid():
+            t = request.FILES.getlist('multi_file_field')
+            nd1 = Dataset(token_hex(12), 5, "Test", [], t[0], False)
+            nd2 = Dataset(token_hex(12), 6, "Test", [], t[1], False)
+            nd1.save()
+            nd2.save()
+            return HttpResponseRedirect('/polls/index')
+        else:
+            print(file_form.errors)
+    else:
+        file_form = TestForm()
+
+    return render(request, 'test.html', {'form' : file_form})

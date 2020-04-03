@@ -1,4 +1,5 @@
 from django import forms
+from multiupload.fields import MultiFileField
 #fully functional
 
 class NewQuestion(forms.Form):
@@ -32,7 +33,6 @@ class NewSubmissionForm(forms.Form):
 
 class NewNode(forms.Form):
     name = forms.CharField(min_length = 1, max_length = 200)
-    location = forms.CharField(min_length = 1, max_length = 200)
 
 #Fully functional
 
@@ -54,3 +54,9 @@ class InviteForm(forms.Form):
     options = ((11, 'Regular User'), (12, 'Admin User'))
     choice = forms.ChoiceField(widget = forms.RadioSelect, choices = options)
     email = forms.EmailField()
+
+class SearchForm(forms.Form):
+    search_field = forms.CharField(max_length = 200, required = False)
+
+class TestForm(forms.Form):
+    multi_file_field = MultiFileField(min_num = 1, max_num = 5, required = False)
