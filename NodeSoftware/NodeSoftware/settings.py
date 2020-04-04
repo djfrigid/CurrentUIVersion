@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+ALLOWED_HOSTS = ['*']
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,9 +26,6 @@ SECRET_KEY = 'k-o(-0w&3-i%_+yei=0^d*nuoj9mwk+5fwvdg6ccwg(d0#1y@t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -125,4 +124,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
 
-MEDIA_ROOT = 'D:\\Python\\Root\\GroupProject\\NodeSoftware\\polls\\uploaded_content'
+MEDIA_ROOT = BASE_DIR + '\\polls\\uploaded_content'

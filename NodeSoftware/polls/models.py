@@ -40,6 +40,7 @@ class Node(models.Model):
     node_name = models.CharField(max_length = 64)
     creators_name = models.CharField(max_length = 128, default = "")
     members = models.DictField(default = {})
+    current_ip_address=models.CharField(max_length = 24, default = '0.0.0.0')
 
     objects = models.DjongoManager()
 

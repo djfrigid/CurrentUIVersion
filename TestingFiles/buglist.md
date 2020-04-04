@@ -20,10 +20,12 @@
 - Add a title block to generic_template, and then add titles to each page rather than just "JCoin" for everything.
 - Rework login system to use django middleware
 - Account Management Page
+- Clearable sorts on questions page
 
 ## Notes:
 mongoimport -d JCoin -c polls_metadata --type csv --file D:\Python\Root\GroupProject\TestingFiles\Meta.csv --headerline
 
 ## Hours:
 
-13
+
+20.45
