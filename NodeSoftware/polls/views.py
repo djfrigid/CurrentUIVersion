@@ -505,7 +505,9 @@ known_nodes = {
     }
 }
 # A wrapper to send an HTTP request.
-def create_request_mock(url, data):
+def create_request_mock(url, data
+
+):
     return status
 # Only allow nodes to respond if there is an update happening.
 updating_now = True
