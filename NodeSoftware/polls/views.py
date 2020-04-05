@@ -9,9 +9,11 @@ from random import choice #Used to randomly select elements from lists
 
 from .forms import * # From the other key Django files, import everything
 from .models import * # Will be removed after login rework
-from .utils import * # One dm_controller will be created here for views to use in the case they need non ORM based access.
+from .utils import * # One dm_controller will be created here for views to use in the case they need non ORM(Object Realtional Model) based access.
+from .updater import * # Defines methods for creating and updating information about node updates
 
-from modules.dm_controller import dm_controller
+from .modules.dm_controller import dm_controller #Imports DM Controller for use by the program, a reference to this will be passed around when needed.
+from .modules.dm_controller_functions import * #Functions that call the corresponding part of DM Controller
 
 def index(request):
     return render(request, 'index.html')
@@ -439,6 +441,9 @@ def hard_delete_dataset(request, dataset_id):
 def node_delete(request):
     pass
 
+def user_soft_delete(request):
+    pass
+
 '''
 
 sss sssss d sss     sss. sss sssss
@@ -467,3 +472,100 @@ def test(request):
     else:
         file_form = TestForm()
     return render(request, 'test.html', {'form' : file_form})
+
+'''
+
+  sSSs.   sSSSs   d s   sb d s   sb d       b d s  b d   sSSs. d s.   sss sssss d ss.    sSSSs   d s  b
+ S       S     S  S  S S S S  S S S S       S S  S S S  S      S  ~O      S     S    b  S     S  S  S S
+S       S       S S   S  S S   S  S S       S S   SS S S       S   `b     S     S    P S       S S   SS
+S       S       S S      S S      S S       S S    S S S       S sSSO     S     S sS'  S       S S    S
+S       S       S S      S S      S S       S S    S S S       S    O     S     S   S  S       S S    S
+ S       S     S  S      S S      S  S     S  S    S S  S      S    O     S     S    S  S     S  S    S
+  "sss'   "sss"   P      P P      P   "sss"   P    P P   "sss' P    P     P     P    P   "sss"   P    P
+
+'''
+
+# +------+
+# | Mock |
+# +------+
+
+# TODO: This needs to be stored in the database.
+known_nodes = {
+    "NodeB": {
+        "IP": 012.345.6789,
+        "key": "" #Auth keys for ensuring update integrity.
+    },
+    "NodeC": {
+        "IP": 987.654.3210,
+        "key": ""
+    },
+    "NodeD": {
+        "IP": 999.666.3333,
+        "key": ""
+    }
+}
+# A wrapper to send an HTTP request.
+def create_request_mock(url, data):
+    return status
+# Only allow nodes to respond if there is an update happening.
+updating_now = True
+# Hold the updater object
+this_updater = {}
+# Hold the name of this node
+this_node_name = 'NodeA'
+
+# +-------+
+# | Codes |
+# +-------+
+
+# 102:      An interim response used to inform the client that the server has
+#           accepted the complete request, but has not yet completed it.
+# 423:      The source or destination resource of a method is locked.
+
+# +---------+
+# | Updater |
+# +---------+
+
+# Define the broadcast_update function
+def broadcast_update(data):
+    this_updater = create_updater(known_nodes, data)
+    for node in known_nodes:
+        IP = known_nodes[nodes]["IP"]
+        status = create_request_mock("https://" + IP + "/update", data, 102)
+        if status == 102:
+            responded_to_broadcast(this_updater, node_name)
+        else:
+            rm_node_from_updater(this_updater, node_name)
+    return
+
+# Define the ack endpoint.
+def ack(request, node_name, auth_key):
+    if updating_now:
+        if auth_key == this_updater["auth"]["key"]:
+            rm_node_from_updater(this_updater, node_name)
+            return HttpResponse(status = 200)
+        else:
+            rm_node_from_updater(this_updater, node_name)
+            return
+    else:
+        return HttpResponse(status = 423)
+
+# +---------+
+# | Updatee |
+# +---------+
+
+# Define the update endpoint.
+def update(request, node_name):
+    if node_name in known_nodes:
+        # Send 102 to confirm data is being saved
+        HttpResponse(status = 102)
+        # Update appropriate databases here
+        IP = known_nodes[node_name]
+        key = known_nodes[node_name]["key"]
+        url = "https://" + IP + "/ack/" + this_node_name + "/" + key
+        status = create_request_mock(url, {}, 200)
+        if status == 200:
+            print("Processed an update from " + node_name)
+        else:
+            print(node_name + " had issues recieving acknowledge")
+        return

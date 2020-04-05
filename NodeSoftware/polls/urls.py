@@ -33,7 +33,6 @@ urlpatterns = [
     path('download_dataset', views.download_dataset, name = 'download_dataset'),
     path('delete_content_question/<int:question_id>', views.delete_content_question, name='delete_content_question'),
     path('delete_content_submission/<int:submission_id>', views.delete_content_submission, name='delete_content_submission'),
-    path('user_soft_delete/<str:username>', views.user_soft_delete, name = 'user_soft_delete'),
     path('user_hard_delete/<str:username>', views.user_hard_delete, name = 'user_hard_delete'),
     path('hard_delete_question/<str:question_title>', views.hard_delete_question, name = 'hard_delete_question'),
     path('hard_delete_dataset/<int:dataset_id>', views.hard_delete_dataset, name = 'hard_delete_dataset'),
